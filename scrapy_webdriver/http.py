@@ -7,11 +7,15 @@ class WebdriverRequest(Request):
     WAITING = None
 
     def __init__(self, url, manager=None, **kwargs):
-        super(WebdriverRequest, self).__init__(url, **kwargs)
         self.manager = manager
+        self.is_ready = kwargs.pop('is_ready', None)
+        self.is_ready_timeout = kwargs.pop('is_ready_timeout', None)
+        super(WebdriverRequest, self).__init__(url, **kwargs)
 
     def replace(self, *args, **kwargs):
         kwargs.setdefault('manager', self.manager)
+        kwargs.setdefault('is_ready', self.is_ready)
+        kwargs.setdefault('is_ready_timeout', self.is_ready_timeout)
         return super(WebdriverRequest, self).replace(*args, **kwargs)
 
 
