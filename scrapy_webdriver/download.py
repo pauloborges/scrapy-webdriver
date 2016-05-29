@@ -1,12 +1,13 @@
-from scrapy import log, version_info
-from scrapy.utils.decorator import inthread
+import logging
+from scrapy import version_info
+from scrapy.utils.decorators import inthread
 from scrapy.utils.misc import load_object
 
 from .http import WebdriverActionRequest, WebdriverRequest, WebdriverResponse
 
-if map(int, version_info) < [0, 18]:
+if list(map(int, version_info)) < [0, 18]:
     FALLBACK_HANDLER = 'http.HttpDownloadHandler'
-elif map(int, version_info) >= [0, 24, 4]:
+elif list(map(int, version_info)) >= [0, 24, 4]:
     FALLBACK_HANDLER = 'http.HTTPDownloadHandler'
 else:
     FALLBACK_HANDLER = 'http10.HTTP10DownloadHandler'
@@ -37,13 +38,13 @@ class WebdriverDownloadHandler(object):
     @inthread
     def _download_request(self, request, spider):
         """Download a request URL using webdriver."""
-        log.msg('Downloading %s with webdriver' % request.url, level=log.DEBUG)
+        logging.debug('Downloading %s with webdriver' % request.url)
         request.manager.webdriver.get(request.url)
         return WebdriverResponse(request.url, request.manager.webdriver)
 
     @inthread
     def _do_action_request(self, request, spider):
         """Perform an action on a previously webdriver-loaded page."""
-        log.msg('Running webdriver actions %s' % request.url, level=log.DEBUG)
+        logging.debug('Running webdriver actions %s' % request.url)
         request.actions.perform()
         return WebdriverResponse(request.url, request.manager.webdriver)
