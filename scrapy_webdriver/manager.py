@@ -23,7 +23,7 @@ class WebdriverManager(object):
         self._webdriver = None
         if isinstance(self._browser, six.string_types):
             if '.' in self._browser:
-                module, browser = self._browser.rsplit('.', 2)
+                module, browser = self._browser.rsplit('.', 1)
             else:
                 module, browser = 'selenium.webdriver', self._browser
             module = __import__(module, fromlist=[browser])

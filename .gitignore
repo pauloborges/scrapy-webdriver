@@ -8,6 +8,7 @@
 *.py[co]
 
 ## Packages
+*.tar.gz
 *.egg
 *.egg-info
 dist

@@ -59,7 +59,7 @@ class WebdriverDownloadHandler(object):
 
     @staticmethod
     def _perform_actions(request):
-        request.actions.perform()
+        request.action(request.manager.webdriver)
 
     def _wait_until_ready(self, request):
         if hasattr(request.is_ready, '__call__'):
